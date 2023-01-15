@@ -1,0 +1,37 @@
+version: '2'
+
+volumes:
+  nextcloud:
+
+services:
+  app:
+    image: nextcloud
+    restart: always
+    ports:
+      - 8080:443
+    volumes:
+      - /storage/nextcloud/data:/var/www/html/data
+      - nextcloud:/var/www/html
+    environment:
+      - POSTGRES_DB=database
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_HOST=hostname
+      - NEXTCLOUD_TRUSTED_DOMAINS=example.com example.org
+      - PHP_UPLOAD_LIMIT=30G
+      - PHP_MEMORY_LIMIT=30G
+      
+# self signed
+#  omgwtfssl:
+#    image: paulczar/omgwtfssl
+#    restart: "no"
+#    volumes:
+#      - certs:/certs
+#    environment:
+#      - SSL_SUBJECT=servhostname.local
+#      - CA_SUBJECT=my@example.com
+#      - SSL_KEY=/certs/servhostname.local.key
+#      - SSL_CSR=/certs/servhostname.local.csr
+#      - SSL_CERT=/certs/servhostname.local.crt
+#    networks:
+#      - proxy-tier
